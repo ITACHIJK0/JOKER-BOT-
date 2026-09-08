@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: ["main"]
   schedule:
-    - cron: '*/30 * * * *' # تشغيل تلقائي كل 30 دقيقة لمنع توقف السيرفر
+    - cron: '*/15 * * * *' # إعادة تشغيل تلقائية كل 15 دقيقة لضمان عدم نوم السيرفر
   workflow_dispatch:
 
 jobs:
@@ -33,8 +33,11 @@ jobs:
       - name: Force Install Sharp (Ensuring compatibility)
         run: npm install sharp --build-from-source
 
-      - name: Start Joker Bot
+      - name: Start Joker Bot Continuously
         run: |
-          node index.js &
-          sleep 20
-          echo "Bot is running successfully with all libraries!"
+          # تشغيل البوت في الخلفية مع حلقة تضمن إعادة فتحه فور انقطاعه
+          while true; do
+            node index.js
+            echo "إعادة تشغيل البوت تلقائياً..."
+            sleep 3
+          done
