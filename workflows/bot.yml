@@ -1,0 +1,40 @@
+name: Joker Bot 24/7
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: '*/30 * * * *' # تشغيل تلقائي كل 30 دقيقة لمنع توقف السيرفر
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install System Dependencies (FFmpeg & Build Tools)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+
+      - name: Install Node Dependencies
+        run: npm install
+
+      - name: Force Install Sharp (Ensuring compatibility)
+        run: npm install sharp --build-from-source
+
+      - name: Start Joker Bot
+        run: |
+          node index.js &
+          sleep 20
+          echo "Bot is running successfully with all libraries!"
