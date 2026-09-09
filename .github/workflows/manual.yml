@@ -24,14 +24,14 @@ jobs:
 
       - name: Install System Dependencies (FFmpeg & Build Tools)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+          sudo apt-get update || true
+          sudo apt-get install -y ffmpeg build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev || true
 
       - name: Install Node Dependencies
         run: npm install
 
       - name: Force Install Sharp (Ensuring compatibility)
-        run: npm install sharp --build-from-source
+        run: npm install sharp --build-from-source || true
 
       - name: Start Joker Bot
         timeout-minutes: 25
