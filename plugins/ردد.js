@@ -45,8 +45,6 @@ let handler = async (m, { conn }) => {
       replyText = '🐐 دا عمك وعم العالم';
     } else if (/كرستيانو|رونالدو/i.test(body)) {
       replyText = '😂 مش بيعرف يعمل حاجه غير يبكي';
-    } else if (/اتاتشي| /i.test(body)) {
-      replyText = '😮 اوه مطوري مالو';
     } else if (/^(ه{2,}|خ{2,}|هههه+|هها+|ههه+)[هها]*$/i.test(body) || body === '😂' || body === '🤣') {
       replyText = '🫠 تدوم الضحكه الحلوه يعسل';
     } else if (/^الجوكر$/i.test(body)) {
@@ -57,7 +55,7 @@ let handler = async (m, { conn }) => {
       replyText = '🙃 بص بعيد';
     }
 
-    // إذا وُجد رد مناسب، يتم إرسال الرسالة مع الأزرار
+    // إذا وُجد رد مناسب، يتم إرسال الرسالة مع المعاينة والزر
     if (replyText) {
       await conn.sendMessage(m.chat, {
         text: replyText,
@@ -66,7 +64,7 @@ let handler = async (m, { conn }) => {
             title: '𝐈𝐭𝐚𝐜𝐡𝐢♞ | 𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ',
             body: 'اضغط للانضمام إلى القناة الرسمية',
             thumbnailUrl: 'https://files.catbox.moe/u6344j.mp4',
-            sourceUrl: 'https://whatsapp.com/channel/0029اVbDHUIRGzzKUabkgin1z',
+            sourceUrl: 'https://whatsapp.com/channel/0029VbDHUIRGzzKUabkgin1z',
             mediaType: 1,
             renderLargerThumbnail: true
           }
