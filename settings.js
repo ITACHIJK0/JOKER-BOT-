@@ -82,7 +82,7 @@ global.dfailMessages = {
 // ========== زخرفة dfail ==========                                          
 global.dfailTitle = '𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ'                                              
 global.dfailDesc = '⧼ 𝐈𝐭𝐚𝐜𝐡𝐢♞ ⧽'
-global.dfailUrl = 'https://whatsapp.com/channel/0029Vb8iiA24tRrvy4FB0H0A'                                                                                                            
+global.dfailUrl = 'https://github.com/mkj800467-ship-i'                                                                                                            
 
 // ========== مراقبة الملف ==========                                         
 let file = fileURLToPath(import.meta.url)                                     
