@@ -278,7 +278,7 @@ exec(comb.toString('utf-8'), async (err, stdout, stderr) => {
                         forwardingScore: 999,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: '120363429074575231@newsletter',
+                            newsletterJid: 'https://whatsapp.com/channel/0029VbDHUIRGzzKUabkgin1z',
                             newsletterName: '𝐈𝐭𝐚𝐜𝐡𝐢♞ | 𝐓𝐇𝐄 𝑱𝑶𝑲𝑬𝑹 ᜰ',
                             serverMessageId: 970
                         }
