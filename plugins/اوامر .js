@@ -155,7 +155,7 @@ let handler = async (m, { conn, usedPrefix: _p, isROwner, isOwner }) => {
             menuCooldown[m.chat] = now                                                              
             try {                                                                                       
                 await conn.sendMessage(m.chat, {
-                    video: { url: 'https://videotourl.com/videos/1787940461838-8d920852-a9ce-4914-8cd4-d4191d730c7a.mp4' },
+                    video: { url: 'https://files.catbox.moe/k7x4qj.mp4' },
                     mimetype: 'video/mp4',
                     ptv: true
                 }, { quoted: m });                                                                  
