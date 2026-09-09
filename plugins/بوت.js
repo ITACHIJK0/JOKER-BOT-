@@ -6,7 +6,7 @@ import { ButtonV2 } from '../core/NIXCODE.js'
 let handler = async (m, { conn }) => {
     try {
         // تفاعل فوري تحت الرسالة
-        await conn.sendMessage(m.chat, { react: { text: '🃏', key: m.key } });
+        await conn.sendMessage(m.chat, { react: { text: '👻', key: m.key } });
 
         const imageUrl = 'https://i.postimg.cc/PxLDwHZq/c02c0c5900a754b9ea09775d85254d9b.jpg';
 
