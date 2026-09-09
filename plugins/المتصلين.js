@@ -1,4 +1,4 @@
-// plugins/active.js
+// plugins/المتصلين.js
 // ✧ THE JOKER & ITACHI - Active Members Command 🌐
 
 import { theme } from '../core/theme.js'
@@ -9,7 +9,7 @@ let handler = async (m, { conn, args }) => {
         if (!id.endsWith('@g.us')) {
             return conn.sendMessage(m.chat, {
                 text: theme.build([
-                    { type: 'title', text: '❌ خـطـأ في الاستخدام' },
+                    { type: 'title', text: '🌐 قـائـمـة الـمـتـصـلـيـن' },
                     { type: 'divider' },
                     { type: 'error', text: 'هذا الأمر مخصص للاستخدام داخل المجموعات فقط' }
                 ])
@@ -18,18 +18,17 @@ let handler = async (m, { conn, args }) => {
 
         await conn.sendMessage(m.chat, { react: { text: '🌐', key: m.key } });
 
-        // جلب الرسائل المخزنة لهذه المجموعة
+        // جلب الرسائل المخزنة في الذاكرة للمجموعة
         const messages = conn.chats[id]?.messages || {};
-
-        // استخراج المشاركين الفريدين من الرسائل النشطة
         const participantsSet = new Set();
+        
         for (let msg of Object.values(messages)) {
             if (msg.key?.participant) {
                 participantsSet.add(msg.key.participant);
             }
         }
 
-        // تحويل LID لرقم حقيقي وبأمان تام
+        // تحويل المعرفات بأمان ودقة
         const participantsArray = [];
         for (const jid of participantsSet) {
             try {
@@ -44,56 +43,57 @@ let handler = async (m, { conn, args }) => {
             }
         }
 
-        // بناء قائمة الأعضاء المنشطين بشكل منسق مع ثيم الجوكر وإيتاشي
-        const onlineListItems = participantsArray
+        // تنسيق القائمة بشكل أنيق وخفيف
+        const activeList = participantsArray
             .sort((a, b) => a.split('@')[0].localeCompare(b.split('@')[0]))
             .map((k, i) => ({
                 type: 'info',
-                label: `${i + 1}`,
+                label: `عضو [${i + 1}]`,
                 value: `@${k.split('@')[0]}`
             }));
 
         let content = [
-            { type: 'title', text: '🌐 قـائـمـة الأعـضـاء الـنـشـطـاء' },
+            { type: 'title', text: '🌐 الـأعـضـاء الـنـشـطـون' },
             { type: 'divider' },
-            { type: 'line', text: '🃏 *الأعضاء المتفاعلون بناءً على الرسائل المسجلة*' },
+            { type: 'line', text: '🃏 *قائمة الأعضاء المتفاعلين في السجل الحالي:*' },
             { type: 'divider' }
         ];
 
-        if (onlineListItems.length > 0) {
-            content.push(...onlineListItems);
+        if (activeList.length > 0) {
+            content.push(...activeList);
+            content.push({ type: 'divider' });
+            content.push({ type: 'info', label: '📊 إجمالي النشطين', value: `${activeList.length} عضو` });
         } else {
-            content.push({ type: 'warning', text: 'لا يوجد أعضاء نشطاء مسجلين في الذاكرة حالياً' });
+            content.push({ type: 'warning', text: 'لا توجد نشاطات مسجلة للأعضاء في الذاكرة حالياً' });
         }
 
+        // جعل التوقيع مخفياً باستخدام ميزة النص المخفي (Spoiler / Hidden Text) في واتساب
         content.push({ type: 'divider' });
-        content.push({ type: 'line', text: '〽️ 𝐉𝐎𝐊𝐄𝐑 𝐁𝐎𝐓 ♞ 𝐁𝐘 𝐈𝐓𝐀𝐂𝐇𝐈 卍' });
-
-        const teks = theme.build(content);
+        content.push({ type: 'line', text: `||〽️ 𝐉𝐎𝐊𝐄𝐑 𝐁𝐎𝐓 ♞ 𝐁𝐘 𝐈𝐓𝐀𝐂𝐇𝐈||` });
 
         await conn.sendMessage(m.chat, { 
-            text: teks, 
+            text: theme.build(content), 
             mentions: participantsArray 
         }, { quoted: m });
 
         await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } });
 
     } catch (e) {
-        console.error('[Joker-Active] Error:', e);
+        console.error('[Active-Error]', e);
         await conn.sendMessage(m.chat, { react: { text: '❌', key: m.key } });
         await conn.sendMessage(m.chat, {
             text: theme.build([
                 { type: 'title', text: '❌ خـطـأ في النظام' },
                 { type: 'divider' },
-                { type: 'error', text: 'حدث خطأ أثناء محاولة جلب الأعضاء النشطاء' }
+                { type: 'error', text: 'تعذر جلب قائمة المتصلين في الوقت الحالي' }
             ])
         }, { quoted: m });
     }
 }
 
-handler.help = ['المتصلين'].map(v => v + ' *[النشطين]*');
+handler.help = ['المتصلين', 'النشطين'];
 handler.tags = ['group', 'tools'];
-handler.command = /^(المتصلين|النشطين|active)$/i;
+handler.command = /^(المتصلين|متصلين|النشطين|active)$/i;
 handler.group = true;
 
 export default handler;
