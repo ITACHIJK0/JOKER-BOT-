@@ -9,8 +9,8 @@ import fetch from 'node-fetch'
 import axios from 'axios'                                                     
 import moment from 'moment-timezone'                                                                                                                        
 
-//حط lid بتاعك من امر lid                                                     
-global.owner = ['14904274759837',  '249916221538']                                                                                                          
+// حط lid بتاعك من امر lid (تم إضافة المطور الجديد)
+global.owner = ['14904274759837', '249916221538', '212408480080003@lid']                                                                                                          
 
 // ========== المطورين ==========                                             
 global.mods = []                                                              
@@ -30,7 +30,7 @@ global.fs = fs
 
 // ========== إعدادات البوت ==========                                        
 global.packname = '𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ'                                               
-global.author = '𝐈𝐭𝐚𝐜𝐡𝐢♞'                                                     
+global.author = '𝐈𝐭𝐚𝐜hi♞'                                                     
 
 global.multiplier = 85                                                                                                                                      
 
@@ -65,18 +65,58 @@ global.dfailPool = [
     'https://file.garden/aauvg01sjleV_ic1/c5384b18150e07c58ca969282dafcfb2.jpg'                                                                             
 ]                                                                             
 
-// ========== رسائل dfail ==========                                          
+// ========== رسائل dfail (تنسيق تفاعلي متطور مع زر القناة والصورة) ==========                                          
 global.dfailMessages = {                                                          
-    rowner: '🚫 *الامر دا لمطوري اتاتشي فقط*',
-    owner: '🚫 *الامر دا لمطوري اتاتشي فقط*',                                                     
-    mods: '☠️ *الامر دا للذين يملكون صلاحيه فقط*',                                                      
-    premium: '⭐ *الامر دا للمشتركين فقط*',                                                  
-    group: '👥 *الامر دا للجروبات*',                                                     
-    private: '📱 *الامر دا يعمل في الخاص*',                                                      
-    admin: '👑 *الامر دا للادمنز فقط*',
-    botAdmin: '🤖 *لازم اكون ادمن عشان انفذ الامر دا*',                                               
-    unreg: '📝 *غير مسجل*',                                                       
-    restrict: '⚠️ *الامر دا اتاتشي معطلو حاليا*'                                               
+    rowner: {
+        text: '🚫 *هذا الأمر مخصص لمطوري البوت فقط* 👑',
+        footer: '𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ Developer',
+        buttons: [{ name: 'cta_url', params: { display_text: '📢 عرض القناة', url: 'https://whatsapp.com/channel/0029VbDHUIRGzzKUabkgin1z' } }]
+    },
+    owner: {
+        text: '🚫 *هذا الأمر مخصص لمطوري البوت فقط* 👑',
+        footer: '𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ Developer',
+        buttons: [{ name: 'cta_url', params: { display_text: '📢 عرض القناة', url: 'https://whatsapp.com/channel/0029VbDHUIRGzzKUabkgin1z' } }]
+    },                                                     
+    mods: {
+        text: '☠️ *هذا الأمر مخصص للمشرفين المعتمدين فقط*',
+        footer: '𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ Mods',
+        buttons: [{ name: 'cta_url', params: { display_text: '📢 عرض القناة', url: 'https://whatsapp.com/channel/0029VbDHUIRGzzKUabkgin1z' } }]
+    },                                                      
+    premium: {
+        text: '⭐ *هذا الأمر مخصص للمشتركين المميزين فقط*',
+        footer: '𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ Premium',
+        buttons: [{ name: 'cta_url', params: { display_text: '📢 عرض القناة', url: 'https://whatsapp.com/channel/0029VbDHUIRGzzKUabkgin1z' } }]
+    },                                                  
+    group: {
+        text: '👥 *هذا الأمر مخصص للاستخدام داخل المجموعات فقط*',
+        footer: '𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ Groups',
+        buttons: [{ name: 'cta_url', params: { display_text: '📢 عرض القناة', url: 'https://whatsapp.com/channel/0029VbDHUIRGzzKUabkgin1z' } }]
+    },                                                     
+    private: {
+        text: '📱 *هذا الأمر يعمل في المحادثات الخاصة فقط*',
+        footer: '𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ Private',
+        buttons: [{ name: 'cta_url', params: { display_text: '📢 عرض القناة', url: 'https://whatsapp.com/channel/0029VbDHUIRGzzKUabkgin1z' } }]
+    },                                                      
+    admin: {
+        text: '👑 *هذا الأمر مخصص لمشرفي المجموعة فقط*',
+        footer: '𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ Admins',
+        buttons: [{ name: 'cta_url', params: { display_text: '📢 عرض القناة', url: 'https://whatsapp.com/channel/0029VbDHUIRGzzKUabkgin1z' } }]
+    },
+    botAdmin: {
+        text: '🤖 *يجب أن أكون مشرفاً (Admin) لتنفيذ هذا الأمر*',
+        footer: '𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ Bot Admin',
+        buttons: [{ name: 'cta_url', params: { display_text: '📢 عرض القناة', url: 'https://whatsapp.com/channel/0029VbDHUIRGzzKUabkgin1z' } }]
+    },                                               
+    unreg: {
+        text: '📝 *عليك التسجيل أولاً لاستخدام البوت*',
+        footer: '𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ Register',
+        buttons: [{ name: 'cta_url', params: { display_text: '📢 عرض القناة', url: 'https://whatsapp.com/channel/0029VbDHUIRGzzKUabkgin1z' } }]
+    },                                                       
+    restrict: {
+        text: '⚠️ *هذا الأمر معطل حالياً من قِبل المطور*',
+        footer: '𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ Restricted',
+        buttons: [{ name: 'cta_url', params: { display_text: '📢 عرض القناة', url: 'https://whatsapp.com/channel/0029VbDHUIRGzzKUabkgin1z' } }]
+    }                                               
 }                                                                             
 
 // ========== زخرفة dfail ==========                                          
@@ -91,4 +131,3 @@ watchFile(file, () => {
     console.log(chalk.redBright("Update 'settings.js'"))
     import(`${file}?update=${Date.now()}`)                                      
 })
-
