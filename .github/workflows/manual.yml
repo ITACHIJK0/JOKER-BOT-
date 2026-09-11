@@ -1,47 +1,42 @@
-name: Joker Bot 24/7
+name: ⚡ Fast Auto-Commit & Sync
 
 on:
   push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-  schedule:
-    - cron: '*/30 * * * *'
+    branches:
+      - main  # أو اسم الفرع الأساسي لديك (master/main)
   workflow_dispatch:
 
 jobs:
-  build:
+  update-repo:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write  # صلاحية الكتابة والتعديل على المستودع
+    
     steps:
-      - name: Checkout Repository
+      - name: 📥 Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          persist-credentials: true
 
-      - name: Install System Dependencies (FFmpeg & Build Tools)
+      - name: ⚙️ Configure Git Identity
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Install Node Dependencies
-        run: npm install
+      - name: 🔄 Pull Latest Changes
+        run: git pull origin main --rebase || true
 
-      - name: Force Install Sharp (Ensuring compatibility)
-        run: npm install sharp --build-from-source
-
-      - name: Start Joker Bot
-        timeout-minutes: 25
+      - name: 📝 Make/Update Changes (مكان تعديل أو توليد ملفاتك)
         run: |
-          node index.js || true
+          # مثال: تحديث وقت التعديل لضمان وجود تغيير فعلي
+          echo "Last updated: $(date)" > last-update.txt
 
-      - name: Commit and Push Session Changes
+      - name: 🚀 Commit & Push Changes
         run: |
-          git config --global user.name "Joker Bot Session Saver"
-          git config --global user.email "bot@action.github.com"
-          git add 2BSession/ BackupSession/ || true
-          git commit -m "Auto-save session files [skip ci]" || true
-          git push || true
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "⚡ Auto-update files by Itachi & Joker workflow [skip ci]"
+            git push origin main
+          fi
