@@ -1,9 +1,12 @@
-// سير عمل خفيف
-name: Fast Upload Helper
+name: Joker Bot 24/7
 
 on:
   push:
     branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -19,6 +22,26 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Confirm Files Ready
+      - name: Install System Dependencies (FFmpeg & Build Tools)
         run: |
-          echo "تم فحص الملفات وجاهزة للاستقرار في المستودع بنجاح."
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+
+      - name: Install Node Dependencies
+        run: npm install
+
+      - name: Force Install Sharp (Ensuring compatibility)
+        run: npm install sharp --build-from-source
+
+      - name: Start Joker Bot
+        timeout-minutes: 25
+        run: |
+          node index.js || true
+
+      - name: Commit and Push Session Changes
+        run: |
+          git config --global user.name "Joker Bot Session Saver"
+          git config --global user.email "bot@action.github.com"
+          git add 2BSession/ BackupSession/ || true
+          git commit -m "Auto-save session files [skip ci]" || true
+          git push || true
