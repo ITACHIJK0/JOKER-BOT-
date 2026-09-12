@@ -1,42 +1,63 @@
-name: ⚡ Fast Auto-Commit & Sync
+name: Joker Bot 24/7 (Persistent Session)
 
 on:
   push:
-    branches:
-      - main  # أو اسم الفرع الأساسي لديك (master/main)
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 jobs:
-  update-repo:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # صلاحية الكتابة والتعديل على المستودع
     
+    # منحة صلاحيات الكتابة لضمان نجاح رفع الجلسة دون أخطاء
+    permissions:
+      contents: write
+
     steps:
-      - name: 📥 Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           persist-credentials: true
+          fetch-depth: 0
 
-      - name: ⚙️ Configure Git Identity
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install System Dependencies (FFmpeg & Build Tools)
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 
-      - name: 🔄 Pull Latest Changes
-        run: git pull origin main --rebase || true
+      - name: Install Node Dependencies
+        run: npm install
 
-      - name: 📝 Make/Update Changes (مكان تعديل أو توليد ملفاتك)
+      - name: Force Install Sharp (Ensuring compatibility)
+        run: npm install sharp --build-from-source
+
+      - name: Pull Latest Session Files (Prevent Conflict)
         run: |
-          # مثال: تحديث وقت التعديل لضمان وجود تغيير فعلي
-          echo "Last updated: $(date)" > last-update.txt
+          git config --global user.name "Joker Bot Session Saver"
+          git config --global user.email "bot@action.github.com"
+          git pull origin main --rebase || echo "No remote changes to pull"
 
-      - name: 🚀 Commit & Push Changes
+      - name: Start Joker Bot
+        timeout-minutes: 24
         run: |
-          git add -A
+          node index.js || true
+
+      - name: Commit and Push Session Changes
+        run: |
+          git add 2BSession/ BackupSession/ || true
+          git status
           if git diff --staged --quiet; then
-            echo "No changes to commit."
+            echo "No session changes to commit."
           else
-            git commit -m "⚡ Auto-update files by Itachi & Joker workflow [skip ci]"
-            git push origin main
+            git commit -m "🔄 Auto-save active session state [skip ci]"
+            git push origin main || git push origin HEAD:main
           fi
