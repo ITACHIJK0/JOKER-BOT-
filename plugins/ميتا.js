@@ -17,7 +17,7 @@ let handler = async (m, { conn }) => {
             forwardOrigin: 4,
             externalAdReply: {
                 title: '⚜️ ITACHI & JOKER - CENTRAL COMMAND',
-                body: 'تم هندسة هذا الكيان بواسطة الأسطورة اتاتشي',
+                body: 'تم هندسة هذا الكيان بواسطة المطور اتاتشي',
                 thumbnailUrl: 'https://files.catbox.moe/g2w389.jpg',
                 sourceUrl: 'https://whatsapp.com/channel/0029Vb3hUaY0LKZ3b53c',
                 mediaType: 1,
@@ -124,7 +124,7 @@ let handler = async (m, { conn }) => {
         await conn.sendMessage(m.chat, { react: { text: '❌', key: m.key } });
 
         // رسالة بديلة في حال عدم دعم التطبيق للواجهة المتقدمة
-        let fallbackText = `🃏 *[ 👑 نظام الجوكر واتاتشي الأسطوري 👑 ]* 🃏\n\n`;
+        let fallbackText = `🃏 *[ 👑 نظام الجوكر بوت الأسطوري 👑 ]* 🃏\n\n`;
         fallbackText += `> تم هندسة هذا الكيان بواسطة العبقري **« اتاتشي »**.\n\n`;
         fallbackText += `📊 *قائمة الأوامر السريعة:*\n`;
         fallbackText += `┌──────────┬────────────────────────┐\n`;
