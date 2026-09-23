@@ -141,7 +141,7 @@ const handler = async (m, { conn, args, usedPrefix, command }) => {
                                 },
                                 {
                                         type: 'line',
-                                        text: `${usedPrefix}${command} gojo`
+                                        text: `${usedPrefix}${command} itachi`
                                 }
                         ])
                 )
