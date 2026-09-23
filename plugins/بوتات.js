@@ -1,117 +1,162 @@
-// plugins/bots.js
-// ✧ THE JOKER & ITACHI - قائمة البوتات الفرعية 🤖
+/*
+⌁ 𝙹𝙾𝙺𝙴𝚁 𝐗 𝙸𝚃𝙰𝙲𝙷𝙸 ⌁
+𝙹𝙾𝙺𝙴𝚁 𝙱𝙾𝚃 ♻️ 𝙴𝙳𝙸𝚃𝙸𝙾𝙽 ʙʏ ɪᴛ𝙰𝙲𝙷𝙸
 
-import { fileURLToPath } from 'url';
-import path from 'path';
-import fs from 'fs';
-import ws from 'ws';
-import { theme } from '../core/theme.js';
+「 𝐂𝐫𝐞𝐝𝐢𝐭𝐬 𝐛𝐲 𝐉𝐎𝐊𝐄𝐑 𝐁𝐎𝐓 」
+「 لا تحذف الحقوق 🖤 」
+*/
 
-const YORU_IMAGE = 'https://file.garden/aauvg01sjleV_ic1/nier%20automata%20by%20GoddessMechanic.jpg';
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import ws from 'ws'
+import { generateWAMessageFromContent } from '@whiskeysockets/baileys'
 
-async function handler(m, { conn }) {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
+let handler = async (m, { conn }) => {
+    await m.react('📊')
 
-  // مسار جلسات السب بوت
-  const carpetaBase = path.resolve(__dirname, '..', 'MB-2BSubBot');
-  let cantidadCarpetas = 0;
+    const __filename = fileURLToPath(import.meta.url)
+    const __dirname = path.dirname(__filename)
 
-  try {
-    cantidadCarpetas = fs.readdirSync(carpetaBase, { withFileTypes: true })
-      .filter(dir => dir.isDirectory()).length;
-  } catch {}
+    // مسار جلسات السب بوت
+    const carpetaBase = path.resolve(__dirname, '..', 'MB-2BSubBot')
+    let cantidadCarpetas = 0
 
-  // حساب وقت تشغيل السيرفر
-  const uptime = convertirMs(process.uptime() * 1000);
+    try {
+        cantidadCarpetas = fs.readdirSync(carpetaBase, { withFileTypes: true })
+            .filter(dir => dir.isDirectory()).length
+    } catch {}
 
-  // تأمين مصفوفة الاتصالات
-  const conns = Array.isArray(global.conns) ? global.conns : [];
+    // حساب وقت تشغيل السيرفر
+    const uptimeMs = process.uptime() * 1000
+    const hours = Math.floor(uptimeMs / (1000 * 60 * 60))
+    const minutes = Math.floor((uptimeMs % (1000 * 60 * 60)) / (1000 * 60))
+    const seconds = Math.floor((uptimeMs % (1000 * 60)) / 1000)
+    const uptimeString = `${hours}س ${minutes}د ${seconds}ث`
 
-  const users = conns.filter(
-    c =>
-      c?.user &&
-      c?.ws?.socket &&
-      c.ws.socket.readyState !== ws.CLOSED
-  );
+    // تأمين مصفوفة الاتصالات
+    const conns = Array.isArray(global.conns) ? global.conns : []
+    const users = conns.filter(
+        c =>
+            c?.user &&
+            c?.ws?.socket &&
+            c.ws.socket.readyState !== ws.CLOSED
+    )
 
-  // بناء قائمة البوتات الفرعية المتصلة
-  const message = users.map((v, index) => {
-    const userDB = global.db?.data?.users?.[v.user.jid] || {};
-    const hidden = userDB.privacy === true;
+    // تجهيز جدول الحانات أو العناصر الفرعية إذا وجدت بوتات متصلة
+    let botListDetails = ''
+    if (users.length > 0) {
+        botListDetails = users.map((v, index) => {
+            const userDB = global.db?.data?.users?.[v.user.jid] || {}
+            const hidden = userDB.privacy === true
+            const botNumber = hidden ? 'مخفي للخصوصية' : `wa.me/${v.user.jid.replace(/[^0-9]/g, '')}`
+            return `[${index + 1}] ${v.user.name || userDB.name || 'مجهول'} (${botNumber})`
+        }).join('\n')
+    } else {
+        botListDetails = '❌ لا يوجد سب بوت متصل حالياً'
+    }
 
-    const botNumber = hidden
-      ? '[ مـخـفـي بـسـبـب الـخـصـوصـيـة ]'
-      : `wa.me/${v.user.jid.replace(/[^0-9]/g, '')}?text=.تنصيب`;
-
-    const prestarStatus =
-      !hidden && userDB.prestar
-        ? '✅ يمكن استعارة البوت لإدخاله جروبات'
-        : '';
-
-    return `*الرقم:* [${index + 1}]\n*الاسم:* ${v.user.name || userDB.name || 'مجهول'}\n*التشغيل:* \`\`\`${v.uptime ? convertirMs(Date.now() - v.uptime) : 'غير معروف'}\`\`\`\n*الرابط:* ${botNumber}\n${prestarStatus}`;
-  }).join('\n\n-------------------\n\n');
-
-  const replyMessage = message.length
-    ? message
-    : '❌ لا يوجد سب بوت متصل حالياً\nجرب لاحقاَ أو قم بإنشاء سب بوت خاص بك';
-
-  // تجميع الإحصائيات العامة باستخدام ستايل الـ theme النظيف
-  const responseText = theme.build([
-    { type: 'title', text: 'قـائـمـة الـبـوتـات الـفـرعـيـة' },
-    { type: 'divider' },
-    { type: 'info', label: 'البوتات المتصلة', value: `${users.length}` },
-    { type: 'info', label: 'الجلسات المنشأة', value: `${cantidadCarpetas}` },
-    { type: 'info', label: 'الجلسات النشطة', value: `${users.length}` },
-    { type: 'info', label: 'سيرفر التشغيل', value: `${uptime}` },
-    { type: 'divider' },
-    { type: 'line', text: replyMessage }
-  ]);
-
-  try {
-    await conn.sendMessage(
-      m.chat,
-      {
-        image: { url: YORU_IMAGE },
-        caption: responseText,
-        contextInfo: {
-          isForwarded: true,
-          forwardingScore: 1,
-          forwardedNewsletterMessageInfo: {
-            newsletterJid: '120363410276242111@newsletter',
-            newsletterName: ' ๋࣭⋆˚𓂅𝐉𝐎𝐊𝐄𝐑 𝐁𝐎𝐓𓏲֗ ๋࣭⋆˚',
-            serverMessageId: 970
-          }
+    let submessages = [
+        {
+            messageType: 2,
+            messageText: `⌁ 𝙹𝙾𝙺𝙴𝚁 𝙱𝙾𝚃 ⌁\n📊 إحصائيات البوتات الفرعية والنظام`
+        },
+        {
+            messageType: 4,
+            tableMetadata: {
+                rows: [
+                    {
+                        items: ['🤖 اسم البوت', '𝙹𝙾𝙺𝙴𝚁 𝙱𝙾𝚃'],
+                        isHeading: false
+                    },
+                    {
+                        items: ['⚡ السب بوتات المتصلة', `${users.length}`],
+                        isHeading: false
+                    },
+                    {
+                        items: ['📁 الجلسات المنشأة', `${cantidadCarpetas}`],
+                        isHeading: false
+                    },
+                    {
+                        items: ['⏳ وقت التشغيل', uptimeString],
+                        isHeading: false
+                    },
+                    {
+                        items: ['👑 المطور', 'ITACHI'],
+                        isHeading: false
+                    },
+                    {
+                        items: ['📞 رقم المطور', '+249927142037'],
+                        isHeading: false
+                    }
+                ],
+                title: '⌁ 𝙹𝙾𝙺𝙴𝚁 • 𝐒𝐘𝐒𝐓𝐄𝐌 ⌁'
+            }
+        },
+        {
+            messageType: 2,
+            messageText: `📋 تفاصيل السب بوتات:\n${botListDetails}\n\n🖤 شكرًا لاستخدامك JOKER BOT\n亗 𝐉𝐨𝐤𝐞𝐫 𝐁𝐨𝐭 ✰ 𝐁𝐲 𝐈𝐭𝐚𝐜𝐡𝐢 ♞`
         }
-      },
-      { quoted: m }
-    );
-  } catch {
-    await conn.sendMessage(m.chat, { 
-      text: responseText,
-      contextInfo: {
-        isForwarded: true,
-        forwardingScore: 1,
-        forwardedNewsletterMessageInfo: {
-          newsletterJid: '120363410276242111@newsletter',
-          newsletterName: ' ๋࣭⋆˚𓂅𝐉𝐎𝐊𝐄𝐑 𝐁𝐎𝐓𓏲֗ ๋࣭⋆˚',
-          serverMessageId: 970
+    ]
+
+    let richMsg = generateWAMessageFromContent(
+        m.chat,
+        {
+            botForwardedMessage: {
+                message: {
+                    richResponseMessage: {
+                        messageType: 1,
+                        submessages: submessages,
+                        contextInfo: {
+                            forwardingScore: 99999,
+                            isForwarded: true,
+                            forwardedAiBotMessageInfo: {
+                                botJid: conn.user.id.split(':')[0] + '@bot'
+                            },
+                            forwardOrigin: 4
+                        }
+                    }
+                }
+            }
+        },
+        {}
+    )
+
+    await conn.relayMessage(
+        m.chat,
+        richMsg.message,
+        {
+            messageId: richMsg.key.id,
+            additionalNodes: [
+                {
+                    tag: 'biz',
+                    attrs: {},
+                    content: [
+                        {
+                            tag: 'interactive',
+                            attrs: {
+                                type: 'native_flow',
+                                v: '1'
+                            },
+                            content: [
+                                {
+                                    tag: 'native_flow',
+                                    attrs: {
+                                        v: '9',
+                                        name: 'mixed'
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
-      }
-    }, { quoted: m });
-  }
+    )
 }
 
-handler.command = /^(قائمة_البوتات|البوتات|بوتات|bots|سب_بوتات)$/i;
-export default handler;
+handler.help = ['احصائيات', 'بوتات']
+handler.tags = ['main']
+handler.command = /^(قائمة_البوتات|البوتات|بوتات|bots|سب_بوتات|احصائيات|إحصائيات|stats)$/i
 
-function convertirMs(ms) {
-  const s = Math.floor(ms / 1000) % 60;
-  const m = Math.floor(ms / 60000) % 60;
-  const h = Math.floor(ms / 3600000) % 24;
-  const d = Math.floor(ms / 86400000);
-  return [d ? `${d}d` : '', `${h}h`, `${m}m`, `${s}s`]
-    .filter(Boolean)
-    .join(' ');
-}
-
+export default handler
