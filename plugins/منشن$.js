@@ -37,11 +37,11 @@ let handler = async (m, { conn, isAdmin, isOwner }) => {
   // تنسيق المنشنات داخل إطار جميل ومنسق
   let tags = participants.map((p, index) => `│ ${index + 1}. @${p.id.split('@')[0]}`).join('\n');
 
-  let text = `👑 *[ منشن جميع أعضاء الحلبة ]* 👑\n\n`;
+  let text = `👑 *[  منشن جميع أعضاء الجروب  ]* 👑\n\n`;
   text += `┌─── ❖ *قائمة الأعضاء* ❖ ───\n`;
   text += `${tags}\n`;
-  text += `└─── ❖ *ITACHI & JOKER* ❖ ───\n\n`;
-  text += `> ⚡ *تم استدعاء الجميع بنجاح بواسطة سيادة المشرف أو المطور.*`;
+  text += `└─── ❖ *『𝒥𝒪𝒦𝐸𝑅 ♕ 𝐵𝒪𝒯 』* ❖ ───\n\n`;
+  text += `> ⚡ *تم استدعاء الجميع بنجاح    .*`;
 
   let imageUrl = 'https://i.postimg.cc/dtd8Vpfg/c8b1419bcf35feb34e093e26e1d1f606.jpg';
 
