@@ -62,7 +62,7 @@ global.dfailPool = [
     'https://i.postimg.cc/4Nknw7Cz/9a46ea80051d1db74c2675c300a7014e.jpg',                                                              
     'https://i.postimg.cc/4ytysZcY/11cdb4188006b9117ea85c5cc5ab911f.jpg',                                                              
     'https://i.postimg.cc/QM4HqfsB/709d2a215ad4bd49f895cec71e75cea8.jpg',                                                              
-    'https://i.postimg.cc/5t0tj8vV/4bef05c19e42caec7cb9a22fbb2a74c3.jpg'
+    'https://i.postimg.cc/5t0tj8vV/4bef05c19e42caec7cb9a22fbb2a74c3.jpg',
 ]
 
 // رسائل الحالة المبسطة
