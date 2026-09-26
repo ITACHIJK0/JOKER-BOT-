@@ -1,28 +1,21 @@
 /*
 ⌁ 𝙹𝙾𝙺𝙴𝚁 𝐗 𝙸𝚃𝙰𝙲𝙷𝙸 ⌁
-𝙹𝙾𝙺𝙴𝚁 𝙱𝙾𝚃 ♻️ 𝙴𝙳𝙸𝚃𝙸𝙾𝙽 ʙʏ ɪ𝚃𝙰𝙲𝙷𝙸
+𝙹𝙾𝙺𝙴𝙍 𝙱𝙾𝚃 ♻️ 𝙴𝙳𝙸𝚃𝙸Ο𝙽 ʙʏ ɪ𝚃𝙰𝙷𝙸
 
-「 𝐂𝐫𝐞𝐝𝐢𝐭𝐬 𝐛𝐲 𝙅O𝙆𝙴𝙍 𝘽𝙊𝙏 」
+「 𝐂𝐫𝐞𝐝𝐢𝐭𝐬 𝐛𝐲 𝙅𝙾𝙺𝙴𝙍 𝘽𝙾🇹 」
 「 لا تحذف الحقوق 🖤 」
 */
 
 import { theme } from '../core/theme.js'
 
-const allowedNumbers = [
-    '249927142037',
-    '249916221538'
-]
+let handler = async (m, { conn, isROwner }) => {
 
-const handler = async (m, { conn }) => {
-
-    const sender = String(m.sender || '')
-        .replace(/[^0-9]/g, '')
-
-    if (!allowedNumbers.includes(sender)) {
+    // التحقق المباشر من المطور الأساسي عبر النظام الرئيسي
+    if (!isROwner) {
         const denyContent = [
             { type: 'title', text: '⛔ 𝐀𝐂𝐂𝐄𝐒𝐒 𝗗𝙴𝙽𝙸𝙴𝙳' },
             { type: 'divider' },
-            { type: 'line', text: '❌ هذا الأمر مخصص للمطورين فقط.' }
+            { type: 'line', text: '❌ هذا الأمر مخصص للمطور الأساسي فقط.' }
         ]
         return conn.reply(m.chat, theme.build(denyContent), m)
     }
