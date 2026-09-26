@@ -54,15 +54,15 @@ global.soporteGB = 'https://whatsapp.com/channel/0029Vb8iiA24tRrvy4FB0H0A'
 
 // صور المعاينة المصغرة الموحدة
 global.dfailPool = [                                                   
-    'https://file.garden/aauvg01sjleV_ic1/1199e9965d7836cf5f5ff6ab0463e451.jpg',
-    'https://file.garden/aauvg01sjleV_ic1/7b0ed3c48e859d22e73b62093148b22b.jpg',
-    'https://file.garden/aauvg01sjleV_ic1/6c936c420d5d23007ac874f498219280.jpg',                                                              
-    'https://file.garden/aauvg01sjleV_ic1/9e5af83aa668643f0bbef190f4786686.jpg',                                                              
-    'https://file.garden/aauvg01sjleV_ic1/9b893fe97b907333aa4e7e285e424768.jpg',                                                              
-    'https://file.garden/aauvg01sjleV_ic1/180da285198e9226b2eb8adec0e670b1.jpg',                                                              
-    'https://file.garden/aauvg01sjleV_ic1/0bc2d63e8467867b9a56a31ce1077b10.jpg',                                                              
-    'https://file.garden/aauvg01sjleV_ic1/ecca80ffa8c0081f4f117a28f3c5b009.jpg',                                                              
-    'https://file.garden/aauvg01sjleV_ic1/c5384b18150e07c58ca969282dafcfb2.jpg'
+    'https://i.postimg.cc/QM4HqfsB/709d2a215ad4bd49f895cec71e75cea8.jpg',
+    'https://i.postimg.cc/5t0tj8vV/4bef05c19e42caec7cb9a22fbb2a74c3.jpg',
+    'https://i.postimg.cc/4Nknw7Cz/9a46ea80051d1db74c2675c300a7014e.jpg',                                                              
+    'https://i.postimg.cc/4ytysZcY/11cdb4188006b9117ea85c5cc5ab911f.jpg',                                                              
+    'https://i.postimg.cc/5t0tj8vV/4bef05c19e42caec7cb9a22fbb2a74c3.jpg',                                                              
+    'https://i.postimg.cc/4Nknw7Cz/9a46ea80051d1db74c2675c300a7014e.jpg',                                                              
+    'https://i.postimg.cc/4ytysZcY/11cdb4188006b9117ea85c5cc5ab911f.jpg',                                                              
+    'https://i.postimg.cc/QM4HqfsB/709d2a215ad4bd49f895cec71e75cea8.jpg',                                                              
+    'https://i.postimg.cc/5t0tj8vV/4bef05c19e42caec7cb9a22fbb2a74c3.jpg'
 ]
 
 // رسائل الحالة المبسطة
