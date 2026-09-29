@@ -35,7 +35,7 @@ global.author = '𝐈𝐭𝐚𝐜𝐡𝐢♞'
 global.multiplier = 85                                                 
 
 // اكتب رقمك هنا الي عايز تربط بي البوت من دون + او فواصل
-global.botNumberCode = "963999661438"
+global.botNumberCode = "963989303729"
 
 // ========== القنوات ==========
 global.ch = {                                                          
