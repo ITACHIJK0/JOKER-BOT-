@@ -26,7 +26,7 @@ let handler = async (m, { conn, command, text, usedPrefix }) => {
     let topic = text ? text.trim() : (command.replace(/^توب/i, '').trim() || 'المميزين');
 
     let title = `🏆 *[ قـائـمـة أكـثـر 10 (${topic}) فـي الـجـروب ]* 👑`;
-    let description = '🎯 *القائمة المختارة بعناية فائقة عبر بصيرة الشارينگان وأسوار الوهم:*';
+    let description = '🎯 *القائمة المختارة بعناية فائقة من دون كذب 🙄🤞:*';
     let emoji = '🔥';
 
     let textResult = `${title}\n\n${description}\n\n`;
@@ -35,7 +35,7 @@ let handler = async (m, { conn, command, text, usedPrefix }) => {
         textResult += `${index + 1}. ${emoji} @${jid.split('@')[0]}\n`;
     });
 
-    textResult += `\n▪️ 👑 𝐈𝐭𝐚𝐜𝐡𝐢♞ | 𝐓𝐇𝐄 𝑱𝑶𝑲𝑬𝑹 ᜰ`;
+    textResult += `\n▪️ 👑 ꒷︶ 𝐉𝐨𝐤𝐞𝐫 𝐁𝐨𝐭 ✰ 𝐁𝐲 𝐈𝐭𝐚𝐜𝐡𝐢 ♞ `;
 
     await conn.sendMessage(m.chat, {
         text: textResult,
