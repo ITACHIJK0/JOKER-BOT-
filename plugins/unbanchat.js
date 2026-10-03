@@ -19,7 +19,7 @@ const sendThemedText = async (conn, m, titleText, descText) => {
   return conn.reply(m.chat, theme.build(content), m)
 }
 
-const handler = async (m, { conn, isAdmin, isROwner }) => {
+const handler = async (m, { conn, isAdmin, isROwner, isOwner, command, text }) => {
 
   if (!m.isGroup) {
     return sendThemedText(
@@ -34,6 +34,64 @@ const handler = async (m, { conn, isAdmin, isROwner }) => {
   const botPath = path.join('./2BSubBot', senderNumber)
   const isSocketUser = fs.existsSync(botPath)
 
+  global.db.data.chats[m.chat] = global.db.data.chats[m.chat] || {}
+  const chatData = global.db.data.chats[m.chat]
+
+  // معالجة أمر .فك_اعضاء (إلغاء وضع حظر الأعضاء / المشرفين فقط)
+  if (command === 'فك_اعضاء' || command === 'إلغاء_حظر_اعضاء') {
+    if (!(isAdmin || isROwner || isOwner)) {
+      return sendThemedText(conn, m, '🚫 𝘼𝘾𝘾𝙀𝙎𝙎 𝗗𝙴𝙽𝙸𝙴𝙳', '❌ هذا الأمر مخصص للمشرفين والمطور فقط.')
+    }
+    
+    chatData.adminOnly = false
+
+    const successContent = [
+      { type: 'title', text: '✦ MEMBERS UNBANNED ✦' },
+      { type: 'divider' },
+      { type: 'line', text: '🔓 تم إلغاء وضع المشرفين فقط بنجاح.' },
+      { type: 'line', text: '👥 الحالة: *الرد متاح لجميع الأعضاء*' }
+    ]
+    return conn.reply(m.chat, theme.build(successContent), m)
+  }
+
+  // معالجة أمر .فك_فرعي (فك حظر بوت فرعي)
+  if (command === 'فك_فرعي' || command === 'فك_حظر_فرعي') {
+    if (!(isROwner || isOwner || isSocketUser || isAdmin)) {
+      return sendThemedText(conn, m, '🚫 𝘼𝘾𝘾𝙀𝙎𝙎 𝗗𝙴𝙽𝙸𝙴𝙳', '❌ لا تملك صلاحية استخدام هذا الأمر.')
+    }
+
+    chatData.subBotsBanned = chatData.subBotsBanned || {}
+    let targetPath = botPath
+    let targetName = 'البوت الفرعي الخاص بك'
+
+    const mentioned = m.mentionedJid?.[0] || m.quoted?.sender
+    if (mentioned && (isROwner || isOwner)) {
+      const targetNumber = String(mentioned).replace(/\D/g, '')
+      const checkPath = path.join('./2BSubBot', targetNumber)
+      if (fs.existsSync(checkPath)) {
+        targetPath = checkPath
+        targetName = `البوت الفرعي (@${targetNumber})`
+      } else {
+        return sendThemedText(conn, m, '⚠️ 𝙒𝘼𝚁𝙽𝙸𝙽𝙶', '❌ الشخص المستهدف ليس لديه بوت فرعي مسجل.')
+      }
+    } else if (!isSocketUser && !(isROwner || isOwner)) {
+      return sendThemedText(conn, m, '🚫 𝘼𝘾𝘾𝙀𝙎𝙎 𝗗𝙴𝙽𝙸𝙴𝙳', '❌ هذا الأمر خاص بأصحاب البوتات الفرعية أو المطور.')
+    }
+
+    chatData.subBotsBanned[targetPath] = false
+
+    const successContent = [
+      { type: 'title', text: '✦ SUB-BOT UNBANNED ✦' },
+      { type: 'divider' },
+      { type: 'line', text: `✅ تم إعادة تفعيل ${targetName} في هذه المجموعة بنجاح.` },
+      { type: 'line', text: '🔱 النظام: *ACTIVE*' }
+    ]
+    return conn.reply(m.chat, theme.build(successContent), m, {
+      mentions: mentioned ? [mentioned] : []
+    })
+  }
+
+  // الأمر الافتراضي (فك حظر الجروب العام / البوت الرئيسي)
   if (!(isAdmin || isROwner || isSocketUser)) {
     return sendThemedText(
       conn,
@@ -43,13 +101,9 @@ const handler = async (m, { conn, isAdmin, isROwner }) => {
     )
   }
 
-  global.db.data.chats[m.chat] = global.db.data.chats[m.chat] || {}
-  const chatData = global.db.data.chats[m.chat]
-
   let targetSubBotPath = null
   let targetName = 'هذه المجموعة'
 
-  // التحقق هل المطور حدد شخصاً بمنشن أو ريبلاي لفك الحظر عن بوت فرعي معين
   const mentioned = m.mentionedJid?.[0] || m.quoted?.sender
   if (mentioned && isROwner) {
     const targetNumber = String(mentioned).replace(/\D/g, '')
@@ -60,19 +114,15 @@ const handler = async (m, { conn, isAdmin, isROwner }) => {
     }
   }
 
-  // منطق فك الحظر الذكي
   if (targetSubBotPath) {
-    // فك حظر بوت فرعي محدد عبر المطور
     if (chatData.subBotsBanned) {
       chatData.subBotsBanned[targetSubBotPath] = false
     }
   } else if (isSocketUser && !isROwner) {
-    // صاحب البوت الفرعي يفك حظر بوته هو فقط
     if (chatData.subBotsBanned) {
       chatData.subBotsBanned[botPath] = false
     }
   } else {
-    // فك الحظر العام عن الجروب (للبوت الرئيسي)
     chatData.isBanned = false
   }
 
@@ -96,7 +146,9 @@ handler.help = [
   'فك_بانشات',
   'بانشاتفك',
   'desbanearbot',
-  'unbanchat'
+  'unbanchat',
+  'فك_اعضاء',
+  'فك_فرعي'
 ]
 
 handler.tags = [
@@ -108,7 +160,9 @@ handler.command = [
   'فك_بانشات',
   'بانشاتفك',
   'desbanearbot',
-  'unbanchat'
+  'unbanchat',
+  'فك_اعضاء',
+  'فك_فرعي'
 ]
 
 handler.group = true
