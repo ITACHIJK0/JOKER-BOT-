@@ -1,19 +1,11 @@
 // plugins/المتصلين.js
 // ✧ THE JOKER & ITACHI - Active Members Command 🌐
 
-import { theme } from '../core/theme.js'
-
 let handler = async (m, { conn, args }) => {
     try {
         let id = args?.[0]?.match(/\d+\-\d+@g.us/) || m.chat;
-        if (!id.endsWith('@g.us')) {
-            return conn.sendMessage(m.chat, {
-                text: theme.build([
-                    { type: 'title', text: '🌐 قـائـمـة الـمـتـصـلـيـن' },
-                    { type: 'divider' },
-                    { type: 'error', text: 'هذا الأمر مخصص للاستخدام داخل المجموعات فقط' }
-                ])
-            }, { quoted: m });
+        if (!typeof id === 'string' || !id.endsWith('@g.us')) {
+            id = m.chat;
         }
 
         await conn.sendMessage(m.chat, { react: { text: '🌐', key: m.key } });
@@ -43,36 +35,38 @@ let handler = async (m, { conn, args }) => {
             }
         }
 
-        // تنسيق القائمة بشكل أنيق وخفيف
-        const activeList = participantsArray
-            .sort((a, b) => a.split('@')[0].localeCompare(b.split('@')[0]))
-            .map((k, i) => ({
-                type: 'info',
-                label: `عضو [${i + 1}]`,
-                value: `@${k.split('@')[0]}`
-            }));
+        // بناء القائمة بالشكل المطلوب تماماً
+        let activeRows = '';
+        const sortedParticipants = participantsArray.sort((a, b) => a.split('@')[0].localeCompare(b.split('@')[0]));
 
-        let content = [
-            { type: 'title', text: '🌐 الـأعـضـاء الـنـشـطـون' },
-            { type: 'divider' },
-            { type: 'line', text: '🃏 *قائمة الأعضاء المتفاعلين في السجل الحالي:*' },
-            { type: 'divider' }
-        ];
-
-        if (activeList.length > 0) {
-            content.push(...activeList);
-            content.push({ type: 'divider' });
-            content.push({ type: 'info', label: '📊 إجمالي النشطين', value: `${activeList.length} عضو` });
+        if (sortedParticipants.length > 0) {
+            sortedParticipants.forEach((k, i) => {
+                activeRows += `┠ 🔸╎عضو [${i + 1}]: @${k.split('@')[0]}\n`;
+            });
         } else {
-            content.push({ type: 'warning', text: 'لا توجد نشاطات مسجلة للأعضاء في الذاكرة حالياً' });
+            activeRows += `┠ ⚠️╎لا توجد نشاطات مسجلة حالياً\n`;
         }
 
-        // جعل التوقيع مخفياً باستخدام ميزة النص المخفي (Spoiler / Hidden Text) في واتساب
-        content.push({ type: 'divider' });
-        content.push({ type: 'line', text: `||〽️ 𝐉𝐎𝐊𝐄𝐑 𝐁𝐎𝐓 ♞ 𝐁𝐘 𝐈𝐓𝐀𝐂𝐇𝐈||` });
+        let totalCount = sortedParticipants.length;
+
+        // تركيب الرسالة بالشكل الملكي المستقل تماماً
+        let msgText = `*꒷︶꒷꒦꒷ 『𝒥𝒪𝒦𝐸𝑅 ♕ 𝐵𝒪𝒯』 ꒷︶꒷꒦꒷*
+
+   ♡ ⦓ 🌐 الأعضاء النشطون ⦔ ♡
+
+*꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷*
+
+*┠ 🛜╎قائمة الأعضاء النشطين حاليا* : ⇓⇓
+${activeRows}
+┠ 📊╎إجمالي النشطين: ${totalCount} عضو
+
+   ♡ 𓆩 ألَا بِـذِڪْرِ اللَّهِ تَـطْـمَـئِـنُّ الْـقُـلُـوبُ 𓆪 ♡
+*꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷*
+        ᵇʸ ➾ 𝐈𝐭𝐚𝐜𝐡𝐢 ♞
+> ꒷︶ 𝐉𝐨𝐤𝐞𝐫 𝐁𝐨𝐭 ✰ 𝐁𝐲 𝐈𝐭𝐚𝐜𝐡𝐢 ♞`;
 
         await conn.sendMessage(m.chat, { 
-            text: theme.build(content), 
+            text: msgText, 
             mentions: participantsArray 
         }, { quoted: m });
 
@@ -82,11 +76,7 @@ let handler = async (m, { conn, args }) => {
         console.error('[Active-Error]', e);
         await conn.sendMessage(m.chat, { react: { text: '❌', key: m.key } });
         await conn.sendMessage(m.chat, {
-            text: theme.build([
-                { type: 'title', text: '❌ خـطـأ في النظام' },
-                { type: 'divider' },
-                { type: 'error', text: 'تعذر جلب قائمة المتصلين في الوقت الحالي' }
-            ])
+            text: `*꒷︶꒷꒦꒷ 『𝒥𝒪𝒦𝐸𝑅 ♕ 𝐵𝒪𝒯』 ꒷︶꒷꒦꒷*\n\n   ♡ ⦓ ❌ خطأ في النظام ⦔ ♡\n\n*꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷*\n\n┠ ❌╎تعذر جلب قائمة المتصلين في الوقت الحالي.\n\n*꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷꒦꒷︶꒷*\n        ᵇʸ ➾ 𝐈𝐭𝐚𝐜𝐡𝐢 ♞`
         }, { quoted: m });
     }
 }
