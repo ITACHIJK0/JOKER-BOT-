@@ -23,7 +23,7 @@ let handler = async (m, { conn, usedPrefix: _p, isROwner, isOwner }) => {
 
         await conn.sendMessage(m.chat, { react: { text: '⛓️', key: m.key } });
                                                
-        const imageUrl = 'https://i.postimg.cc/63rHT1WC/b5da44e5fe5cc53d59a77ad99fb205a8.jpg';
+        const imageUrl = 'https://i.postimg.cc/mgM0MXND/25e50b8c83df821264a82678f144bf3b.jpg';
         const imageRes = await fetch(imageUrl);
         const imageBuffer = Buffer.from(await imageRes.arrayBuffer());
         const media = await prepareWAMessageMedia({ image: imageBuffer }, { upload: conn.waUploadToServer });
