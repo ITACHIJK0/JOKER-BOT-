@@ -212,8 +212,8 @@ async function downloadAndSend(m, conn, url) {
     }
 }
 
-handler.help = ['يوتيوب']
+handler.help = ['يوتيوب', 'شغل', 'شغلي']
 handler.tags = ['downloader']
-handler.command = /^(يوتيوب|yt|youtube)$/i
+handler.command = /^(يوتيوب|yt|youtube|شغل|شغلي)$/i
 
 export default handler
