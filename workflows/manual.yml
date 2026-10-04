@@ -1,0 +1,63 @@
+name: Joker Bot 24/7 (Persistent Session)
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: '0 */6 * * *' # يعمل تلقائياً كل 6 ساعات لتوفير الدقائق
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    # منح صلاحيات الكتابة لضمان نجاح رفع الجلسة دون أخطاء
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install System Dependencies (FFmpeg & Build Tools)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+
+      - name: Install Node Dependencies
+        run: npm install
+
+      - name: Force Install Sharp (Ensuring compatibility)
+        run: npm install sharp --build-from-source
+
+      - name: Pull Latest Session Files (Prevent Conflict)
+        run: |
+          git config --global user.name "Joker Bot Session Saver"
+          git config --global user.email "bot@action.github.com"
+          git pull origin main --rebase || echo "No remote changes to pull"
+
+      - name: Start Joker Bot (6 Hours Continuous)
+        timeout-minutes: 360
+        run: |
+          node index.js || true
+
+      - name: Commit and Push Session Changes
+        run: |
+          git add 2BSession/ BackupSession/ || true
+          git status
+          if git diff --staged --quiet; then
+            echo "No session changes to commit."
+          else
+            git commit -m "🔄 Auto-save active session state [skip ci]"
+            git push origin main || git push origin HEAD:main
+          fi
