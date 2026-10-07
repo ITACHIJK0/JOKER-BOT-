@@ -270,7 +270,7 @@ export async function handler(chatUpdate) {
                 m.isCommand = true
             }
         } catch (err) {
-            console.error('[2B-BUTTON HANDLER ERROR]', err)
+            console.error('[JK-BUTTON HANDLER ERROR]', err)
         }
 
         if (!global.lastMessages) global.lastMessages = []
