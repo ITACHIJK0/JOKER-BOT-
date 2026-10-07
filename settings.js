@@ -39,8 +39,8 @@ global.botNumberCode = "201038315398"
 
 // ========== القنوات ==========
 global.ch = {                                                          
-    ch1: '120363429074575231@newsletter',                              
-    ch2: '120363429074575231@newsletter'                               
+    ch1: '120363411313852634@newsletter',                              
+    ch2: '120363411313852634@newsletter'                               
 }                                                                      
 
 // روابط السوشيال ميديا
@@ -80,9 +80,9 @@ global.dfailMessages = {
 }
 
 // إعدادات المعاينة البصرية الموحدة للقناة والزر
-global.dfailTitle = '𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ'                                      
+global.dfailTitle = '『 ᎥᎿᎯᏟᎻᎥ ♞ ᏟᎻᎯᏁᏁᎬᏓ 』'                                      
 global.dfailDesc = 'اضغط للانضمام إلى القناة الرسمية'
-global.dfailUrl = 'https://whatsapp.com/channel/0029Vb8iiA24tRrvy4FB0H0A'                                                                     
+global.dfailUrl = 'https://whatsapp.com/channel/0029VbDHUIRGzzKUabkgin1z'                                                                     
 
 // مراقبة التحديثات للملف
 let file = fileURLToPath(import.meta.url)
