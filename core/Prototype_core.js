@@ -345,8 +345,8 @@ if (fullMsg?.message) {
                     { x: 20.84, y: -47.80 }
                 ],
                 newsletter: {
-                    newsletterJid: '120363429074575231@newsletter',
-                    newsletterName: '𝐈𝐭𝐚𝐜𝐡𝐢♞ | 𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ',
+                    newsletterJid: '120363411313852634@newsletter',
+                    newsletterName: '『 ᎥᎿᎯᏟᎻᎥ ♞ ᏟᎻᎯᏁᏁᎬᏓ 』',
                     contentType: 'UPDATE',
                     accessibilityText: '《 𝐈𝐭𝐚𝐜𝐡𝐢♞ 》'
                 }
@@ -765,18 +765,15 @@ END:VCARD`.trim()
                 }
                 
                 let channelId = [
-    '120363429074575231@newsletter',
-    '120363429074575231@newsletter',
-    '120363429074575231@newsletter',
-    '120363429074575231@newsletter',
+    '120363411313852634@newsletter',
+    '120363411313852634@newsletter',
+    '120363411313852634@newsletter',
     '120363429074575231@newsletter'
 ];
 let channelName = [
-    '𝐈𝐭𝐚𝐜𝐡𝐢♞ | 𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ',
-    '𝐈𝐭𝐚𝐜𝐡𝐢♞ | 𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ',
-    '𝐈𝐭𝐚𝐜𝐡𝐢♞ | 𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ',
-    '𝐈𝐭𝐚𝐜𝐡𝐢♞ | 𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ',
-    '𝐈𝐭𝐚𝐜𝐡𝐢♞ | 𝐓𝐇𝐄 𝐉𝐎𝐊𝐄𝐑 ᜰ'
+    '『 ᎥᎿᎯᏟᎻᎥ ♞ ᏟᎻᎯᏁᏁᎬᏓ 』',
+    '『 ᎥᎿᎯᏟᎻᎥ ♞ ᏟᎻᎯᏁᏁᎬᏓ 』',
+    '『 ᎥᎿᎯᏟᎻᎥ ♞ ᏟᎻᎯᏁᏁᎬᏓ 』'
 ];
 
                 let randomIndex = Math.floor(Math.random() * channelId.length)
